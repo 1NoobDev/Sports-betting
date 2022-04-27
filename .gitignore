@@ -21,3 +21,4 @@ TODO.txt
 teams2.db
 sportsbetting/bookmakers/tokens.txt
 sportsbetting/resources/data.json
+venv/*
