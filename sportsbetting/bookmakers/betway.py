@@ -5,7 +5,7 @@ Betway odds scraper
 import re
 
 import dateutil
-import demjson
+import demjson3
 import requests
 
 import sportsbetting as sb
@@ -25,7 +25,7 @@ def parse_betway(url):
     parsed = re.sub("[A-Za-z_$]{1,2}[0-9]?,", '1.01,', parsed)
     parsed = re.sub(r"[A-Za-z_$]{1,2}[0-9]?\]", '1.01]', parsed)
     parsed = re.sub(r"[A-Za-z_$]{1,2}[0-9]?\}", '1.01}', parsed)
-    parsed = demjson.decode(parsed)
+    parsed = demjson3.decode(parsed)
     data = parsed["data"]
     odds_match = {}
     for match in data:
@@ -51,7 +51,7 @@ def parse_sport_betway(url):
     parsed = re.sub("[A-Za-z_$]{1,2}[0-9]?,", '1.01,', parsed)
     parsed = re.sub(r"[A-Za-z_$]{1,2}[0-9]?\]", '1.01]', parsed)
     parsed = re.sub(r"[A-Za-z_$]{1,2}[0-9]?\}", '1.01}', parsed)
-    parsed = demjson.decode(parsed)
+    parsed = demjson3.decode(parsed)
     data = parsed["data"]
     odds_match = {}
     if "eventsGroup" not in data:

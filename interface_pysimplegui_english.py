@@ -31,7 +31,7 @@ from sportsbetting.interface_functions import (odds_table_combine,
                                                best_match_pari_gagnant_interface,
                                                odds_match_interface, delete_odds_interface,
                                                get_current_competitions_interface,
-                                               get_main_competitions_interface,
+                                               #get_main_competitions_interface,
                                                best_combine_reduit_interface)
 
 PATH_DATA = os.path.dirname(sportsbetting.__file__) + "/resources/data.pickle"
