@@ -87,6 +87,12 @@ maxdatetime = "Maximum Date/Time"
 ignoregame = "Ignore this game"
 numberofmatches = "Number of matches combined"
 resetmatches = "Reset Matches"
+minodds = "Minimum odds"
+fonttype = "Consolas 10"
+stakesbreakdowntext = "Breakdown of stakes (the totals displayed take into account any freebets) :"
+combinedodds = "See combined odds"
+withdrawbet = "Withdraw bet"
+addbet = "Add bet"
 
 parsing_layout = [
     [
@@ -117,7 +123,7 @@ parsing_layout = [
             element_justification="center") for site in sb.BOOKMAKERS_BOOST]
 ]
 
-column_text_under_condition = [[sg.Text("Bet")], [sg.Text("Minimum odds")]]
+column_text_under_condition = [[sg.Text("Bet")], [sg.Text(minodds)]]
 column_fields_under_condition = [[sg.InputText(key='BET_UNDER_CONDITION', size=(6, 1))],
                                  [sg.InputText(key='ODD_UNDER_CONDITION', size=(6, 1))]]
 column_under_condition = [[sg.Column(column_text_under_condition),
@@ -163,10 +169,10 @@ match_under_condition_layout = [[sg.Listbox(sb.BOOKMAKERS, size=(20, nb_bookmake
                                      "account any freebets) :",
                                      key="TEXT_UNDER_CONDITION", visible=False)],
                                      [sg.MLine(size=(LENGTH_FIELD, HEIGHT_FIELD_SIMPLE), key="RESULT_UNDER_CONDITION",
-                                               font="Consolas 10", visible=False)]])],
+                                               font=fonttype, visible=False)]])],
                                 ]
 
-column_text_stake = [[sg.Text("Bet")], [sg.Text("Minimum odds")]]
+column_text_stake = [[sg.Text("Bet")], [sg.Text(minodds)]]
 column_fields_stake = [[sg.InputText(key='BET_STAKE', size=(6, 1))],
                        [sg.InputText(key='ODD_STAKE', size=(6, 1))]]
 column_stake = [[sg.Column(column_text_stake), sg.Column(column_fields_stake)],
@@ -192,7 +198,7 @@ stake_layout = [
      sg.Column([[sg.Text(
          "Breakdown of bets (the totals displayed take into account any freebets) :",
          key="TEXT_STAKE", visible=False)],
-         [sg.MLine(size=(LENGTH_FIELD, HEIGHT_FIELD_COMBINE), key="RESULT_STAKE", font="Consolas 10", visible=False)]])]
+         [sg.MLine(size=(LENGTH_FIELD, HEIGHT_FIELD_COMBINE), key="RESULT_STAKE", font=fonttype, visible=False)]])]
 ]
 
 column_freebet = [[sg.Text("Freebet"), sg.InputText(key='BET_FREEBET', size=(6, 1)), sg.Checkbox("Fractionnable", key='SPLIT_FREEBET')],
@@ -228,12 +234,12 @@ freebet_layout = [
     [sg.Button(resetmatches, key="RELOAD_ODDS_FREEBET", visible=False)],
     [sg.Column(column_indicators_freebet),
      sg.Column(column_results_freebet),
-     sg.Column([[sg.Text("Breakdown of stakes (the totals displayed take into account any freebets) :",
+     sg.Column([[sg.Text(stakesbreakdowntext,
                          key="TEXT_FREEBET", visible=False)],
-                [sg.MLine(size=(LENGTH_FIELD, HEIGHT_FIELD_SIMPLE), key="RESULT_FREEBET", font="Consolas 10", visible=False)]])],
+                [sg.MLine(size=(LENGTH_FIELD, HEIGHT_FIELD_SIMPLE), key="RESULT_FREEBET", font=fonttype, visible=False)]])],
 ]
 
-column_text_cashback = [[sg.Text("Bet")], [sg.Text("Minimum odds")]]
+column_text_cashback = [[sg.Text("Bet")], [sg.Text(minodds)]]
 column_fields_cashback = [[sg.InputText(key='BET_CASHBACK', size=(6, 1))],
                           [sg.InputText(key='ODD_CASHBACK', size=(6, 1))]]
 column_cashback = [[sg.Column(column_text_cashback), sg.Column(column_fields_cashback)],
@@ -276,12 +282,12 @@ cashback_layout = [
      sg.Column([[sg.Text(
          "Breakdown of bets (the totals displayed take into account any freebets) :",
          key="TEXT_CASHBACK", visible=False)],
-         [sg.MLine(size=(LENGTH_FIELD, HEIGHT_FIELD_SIMPLE), key="RESULT_CASHBACK", font="Consolas 10",
+         [sg.MLine(size=(LENGTH_FIELD, HEIGHT_FIELD_SIMPLE), key="RESULT_CASHBACK", font=fonttype,
                    visible=False)]])]
 ]
 
 column_text_combine = [[sg.Text("Bet")],
-                       [sg.Text("Minimum odds")],
+                       [sg.Text(minodds)],
                        [sg.Text("Number of matches")],
                        [sg.Text("Minimum odds per selection")]]
 column_fields_combine = [[sg.InputText(key='BET_COMBINE', size=(6, 1))],
@@ -310,7 +316,7 @@ combine_layout = [[sg.Listbox(sb.BOOKMAKERS, size=(20, nb_bookmakers), key="SITE
                    sg.ProgressBar(100, orientation='h', size=(20, 20), key='PROGRESS_COMBINE', visible=False)],
                   [sg.Text("", size=(100, 1), key="MATCH_COMBINE")],
                   [sg.Text("", size=(30, 1), key="DATE_COMBINE")],
-                  [sg.Column([[sg.Button("See combined odds", key="ODDS_COMBINE",
+                  [sg.Column([[sg.Button(combinedodds, key="ODDS_COMBINE",
                                          visible=False)],
                               [sg.Column(column_indicators_combine),
                                sg.Column(column_results_combine)]]),
@@ -318,7 +324,7 @@ combine_layout = [[sg.Listbox(sb.BOOKMAKERS, size=(20, nb_bookmakers), key="SITE
                        "Breakdown of bets (the totals displayed take into account the"
                        "possible freebets) :",
                        key="TEXT_COMBINE", visible=False)],
-                       [sg.MLine(size=(LENGTH_FIELD, HEIGHT_FIELD_COMBINE), key="RESULT_COMBINE", font="Consolas 10",
+                       [sg.MLine(size=(LENGTH_FIELD, HEIGHT_FIELD_COMBINE), key="RESULT_COMBINE", font=fonttype,
                                  visible=False)]])
                    ]]
 
@@ -328,8 +334,8 @@ column_stakes = [[sg.Text("Site"), sg.Text("Mises")],
                  *([sg.Combo(sb.BOOKMAKERS, key="SITE_STAKES_" + str(i), visible=False),
                     sg.Input(key="STAKE_STAKES_" + str(i), size=(6, 1), visible=False)]
                    for i in range(1, 9)),
-                 [sg.Button("Withdraw bet", key="REMOVE_STAKES"),
-                  sg.Button("Add bet", key="ADD_STAKES")]]
+                 [sg.Button(withdrawbet, key="REMOVE_STAKES"),
+                  sg.Button(addbet, key="ADD_STAKES")]]
 
 visible_stakes = 1
 column_indicators_stakes = [[sg.Text("", size=(15, 1), key="INDICATORS_STAKES" + str(_),
@@ -338,14 +344,14 @@ column_results_stakes = [[sg.Text("", size=(6, 1), key="RESULTS_STAKES" + str(_)
                                   visible=False)] for _ in range(5)]
 stakes_layout = [
     [sg.Text("Site\t\t"), sg.Text("Mise"), sg.Text("Cote minimale"),
-     sg.Button("Withdraw bet", key="REMOVE_STAKES"), sg.Text("Number of matches"),
+     sg.Button(withdrawbet, key="REMOVE_STAKES"), sg.Text("Number of matches"),
      sg.Spin([i for i in range(1, 4)], initial_value=1, key="NB_MATCHES_STAKES"),
      sg.Text("Sport"),
      sg.Combo(sb.SPORTS, default_value="football", key="SPORT_STAKES")],
     [sg.Col([[sg.Combo(sb.BOOKMAKERS, key="SITE_STAKES_0")]]),
      sg.Col([[sg.Input(key="STAKE_STAKES_0", size=(6, 1))]]),
      sg.Col([[sg.Input(key="ODD_STAKES_0", size=(6, 1))]]),
-     sg.Button("Add bet", key="ADD_STAKES"),
+     sg.Button(addbet, key="ADD_STAKES"),
      sg.Checkbox(maxdatetime, key="DATE_MAX_STAKES_BOOL"),
      sg.InputText(tooltip="DD/MM/YYYY", size=(12, 1), key="DATE_MAX_STAKES"),
      sg.InputText(tooltip="HH:MM", size=(7, 1), key="TIME_MAX_STAKES")],
@@ -357,27 +363,27 @@ stakes_layout = [
      sg.ProgressBar(100, orientation='h', size=(20, 20), key='PROGRESS_STAKES', visible=False)],
     [sg.Text("", size=(100, 1), key="MATCH_STAKES")],
     [sg.Text("", size=(30, 1), key="DATE_STAKES")],
-    [sg.Column([[sg.Button("See combined odds", key="ODDS_STAKES", visible=False)],
+    [sg.Column([[sg.Button(combinedodds, key="ODDS_STAKES", visible=False)],
                 [sg.Column(column_indicators_stakes),
                  sg.Column(column_results_stakes)]
                 ]),
      sg.Column([[sg.Text(
-         "Breakdown of stakes (the totals displayed take into account any freebets) :",
+         stakesbreakdowntext,
          key="TEXT_STAKES", visible=False)],
-         [sg.MLine(size=(120, 12), key="RESULT_STAKES", font="Consolas 10", visible=False)]])
+         [sg.MLine(size=(120, 12), key="RESULT_STAKES", font=fonttype, visible=False)]])
      ]]
 
 column_sites_freebets = [[sg.Text("Site")],
                          [sg.Combo(sb.BOOKMAKERS, key="SITE_FREEBETS_0")],
                          *([sg.Combo(sb.BOOKMAKERS, key="SITE_FREEBETS_" + str(i),
                                      visible=False)] for i in range(1, 9)),
-                         [sg.Button("Add bet", key="ADD_FREEBETS")]]
+                         [sg.Button(addbet, key="ADD_FREEBETS")]]
 
 column_freebets_freebets = [[sg.Text("Mises")],
                             [sg.Input(key="STAKE_FREEBETS_0", size=(6, 1))],
                             *([sg.Input(key="STAKE_FREEBETS_" + str(i), size=(6, 1),
                                         visible=False)] for i in range(1, 9)),
-                            [sg.Button("Withdraw bet", key="REMOVE_FREEBETS")]]
+                            [sg.Button(withdrawbet, key="REMOVE_FREEBETS")]]
 
 visible_freebets = 1
 
@@ -398,7 +404,7 @@ freebets_layout = [[sg.Column(column_sites_freebets),
                    [sg.Button("Calculate", key="BEST_MATCH_FREEBETS")],
                    [sg.Text("", size=(100, 1), key="MATCH_FREEBETS")],
                    [sg.Text("", size=(30, 1), key="DATE_FREEBETS")],
-                   [sg.Column([[sg.Button("See combined odds", key="ODDS_FREEBETS",
+                   [sg.Column([[sg.Button(combinedodds, key="ODDS_FREEBETS",
                                           visible=False)],
                                [sg.Column(column_indicators_freebets),
                                 sg.Column(column_results_freebets)]
@@ -407,11 +413,11 @@ freebets_layout = [[sg.Column(column_sites_freebets),
                         "Breakdown of bets (the totals displayed take into account the"
                         "possible freebets) :",
                         key="TEXT_FREEBETS", visible=False)],
-                        [sg.MLine(size=(LENGTH_FIELD, HEIGHT_FIELD_COMBINE), key="RESULT_FREEBETS", font="Consolas 10",
+                        [sg.MLine(size=(LENGTH_FIELD, HEIGHT_FIELD_COMBINE), key="RESULT_FREEBETS", font=fonttype,
                                   visible=False)]])
                     ]]
 
-column_text_gagnant = [[sg.Text("Bet")], [sg.Text("Minimum odds")]]
+column_text_gagnant = [[sg.Text("Bet")], [sg.Text(minodds)]]
 column_fields_gagnant = [[sg.InputText(key='BET_GAGNANT', size=(6, 1))],
                          [sg.InputText(key='ODD_GAGNANT', size=(6, 1))]]
 column_gagnant = [[sg.Column(column_text_gagnant), sg.Column(column_fields_gagnant)],
@@ -445,9 +451,9 @@ gagnant_layout = [
     [sg.Column(column_indicators_gagnant),
      sg.Column(column_results_gagnant),
      sg.Column([[sg.Text(
-         "Breakdown of stakes (the totals displayed take into account any freebets) :",
+         stakesbreakdowntext,
          key="TEXT_GAGNANT", visible=False)],
-         [sg.MLine(size=(LENGTH_FIELD, HEIGHT_FIELD_GAGNANT), key="RESULT_GAGNANT", font="Consolas 10",
+         [sg.MLine(size=(LENGTH_FIELD, HEIGHT_FIELD_GAGNANT), key="RESULT_GAGNANT", font=fonttype,
                    visible=False)]])]
 ]
 
@@ -473,7 +479,7 @@ odds_layout = [
               + [sg.Col([[sg.Radio(x, "OUTCOME_ODDS", key='OUTCOME_ODDS_'+x, enable_events=True)]]) for x in ["1", "N", "2"]]
               + [sg.Radio("Max gain", "OUTCOME_ODDS", key="OUTCOME_ODDS_MAX", enable_events=True)]])
      ],
-     [sg.MLine(size=(LENGTH_FIELD, HEIGHT_FIELD_SIMPLE), key="RESULT_ODDS", font="Consolas 10",
+     [sg.MLine(size=(LENGTH_FIELD, HEIGHT_FIELD_SIMPLE), key="RESULT_ODDS", font=fonttype,
                    visible=False)]
 ]
 
@@ -508,14 +514,14 @@ combi_opt_layout = [
     [sg.Button("Calculate", key="BEST_COMBI_OPT")],
     [sg.Text("", size=(100, 1), key="MATCH_COMBI_OPT")],
     [sg.Text("", size=(30, 1), key="DATE_COMBI_OPT")],
-    [sg.Column([[sg.Button("See combined odds", key="ODDS_COMBI_OPT", visible=False)],
+    [sg.Column([[sg.Button(combinedodds, key="ODDS_COMBI_OPT", visible=False)],
                 [sg.Column(column_indicators_combi_opt),
                  sg.Column(column_results_combi_opt)]
                 ]),
      sg.Column([[sg.Text(
-         "Breakdown of stakes (the totals displayed take into account any freebets) :",
+         stakesbreakdowntext,
          key="TEXT_COMBI_OPT", visible=False)],
-         [sg.MLine(size=(LENGTH_FIELD, HEIGHT_FIELD_COMBINE), key="RESULT_COMBI_OPT", font="Consolas 10", visible=False)]])
+         [sg.MLine(size=(LENGTH_FIELD, HEIGHT_FIELD_COMBINE), key="RESULT_COMBI_OPT", font=fonttype, visible=False)]])
      ]]
 
 values_layout = [
@@ -605,7 +611,7 @@ miles_layout = [[sg.Column(column_miles),
                                       "counts any freebets) :",
                                      key="TEXT_MILES", visible=False)],
                                      [sg.MLine(size=(LENGTH_FIELD, HEIGHT_FIELD_COMBINE), key="RESULT_MILES",
-                                               font="Consolas 10", visible=False)]])],
+                                               font=fonttype, visible=False)]])],
                                 ]
 
 visible_calc=2
@@ -645,7 +651,7 @@ calculator_layout = [
             *([[sg.Radio('', "REFERENCE_STAKE_CALC", key="REFERENCE_STAKE_CALC_" + str(i), visible=i<2, default=i==0, enable_events=True)] for i in range(9)])
         ])
     ],
-    [sg.MLine(size=(LENGTH_FIELD, HEIGHT_FIELD_COMBINE), key="RESULT_CALC", font="Consolas 10", visible=False)]
+    [sg.MLine(size=(LENGTH_FIELD, HEIGHT_FIELD_COMBINE), key="RESULT_CALC", font=fonttype, visible=False)]
 ]
 
 
@@ -735,7 +741,6 @@ while True:
                 else:
                     window["TEXT_PARSING"].update("Initialisation de selenium en cours")
                     time_to_display = sb.EXPECTED_TIME - elapsed_time
-            # sb.EXPECTED_TIME = int(max(0, sb.EXPECTED_TIME - 0.1))
             m, s = divmod(max(0, int(time_to_display)), 60)
             window["REMAINING_TIME_PARSING"].update('{:02d}:{:02d}'.format(int(m), int(s)))
             if sb.IS_PARSING and 100 - sb.PROGRESS < 1e-6:
