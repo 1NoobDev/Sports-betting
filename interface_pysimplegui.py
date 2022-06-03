@@ -79,8 +79,15 @@ else:
     with open(PATH_THEME, "r") as file:
         theme = file.readlines()[0].strip()
 sg.change_look_and_feel(theme)
-
 sg.set_options(enable_treeview_869_patch=False)
+
+#Duplicate variable definitions
+mindatetime = "Minimum Date/Time"
+maxdatetime = "Maximum Date/Time"
+ignoregame = "Ignore this game"
+numberofmatches = "Number of matches combined"
+resetmatches = "Reset Matches"
+
 parsing_layout = [
     [
         sg.Listbox(sb.SPORTS, size=(20, 6), key="SPORT", enable_events=True),
@@ -117,13 +124,13 @@ column_under_condition = [[sg.Column(column_text_under_condition),
                            sg.Column(column_fields_under_condition)],
                           [sg.Listbox(sb.SPORTS, size=(20, 6), key="SPORT_UNDER_CONDITION")]]
 options_under_condition = [[sg.Text("Options")],
-                           [sg.Checkbox("Minimum Date/Time",
+                           [sg.Checkbox(mindatetime,
                                         key="DATE_MIN_UNDER_CONDITION_BOOL"),
                             sg.InputText(tooltip="DD/MM/YYYY", size=(12, 1),
                                          key="DATE_MIN_UNDER_CONDITION"),
                             sg.InputText(tooltip="HH:MM", size=(7, 1),
                                          key="TIME_MIN_UNDER_CONDITION")],
-                           [sg.Checkbox("Maximum Date/Time", key="DATE_MAX_UNDER_CONDITION_BOOL"),
+                           [sg.Checkbox(maxdatetime, key="DATE_MAX_UNDER_CONDITION_BOOL"),
                             sg.InputText(tooltip="DD/MM/YYYY", size=(12, 1),
                                          key="DATE_MAX_UNDER_CONDITION"),
                             sg.InputText(tooltip="HH:MM", size=(7, 1),
@@ -147,8 +154,8 @@ match_under_condition_layout = [[sg.Listbox(sb.BOOKMAKERS, size=(20, nb_bookmake
                                                         visible=False, hide_vertical_scroll=True,
                                                         size=(None, nb_bookmakers))]]),],
                                 [sg.Button("Calculate", key="BEST_MATCH_UNDER_CONDITION")],
-                                [sg.Button("Ignore this game", key="DELETE_MATCH_UNDER_CONDITION", visible=False)],
-                                [sg.Button("Reset matches", key="RELOAD_ODDS_UNDER_CONDITION", visible=False)],
+                                [sg.Button(ignoregame, key="DELETE_MATCH_UNDER_CONDITION", visible=False)],
+                                [sg.Button(resetmatches, key="RELOAD_ODDS_UNDER_CONDITION", visible=False)],
                                 [sg.Column(column_indicators_under_condition),
                                  sg.Column(column_results_under_condition),
                                  sg.Column([[sg.Text(
@@ -190,7 +197,7 @@ stake_layout = [
 
 column_freebet = [[sg.Text("Freebet"), sg.InputText(key='BET_FREEBET', size=(6, 1)), sg.Checkbox("Fractionnable", key='SPLIT_FREEBET')],
                   [sg.Listbox(sb.SPORTS, size=(20, 6), key="SPORT_FREEBET")],
-                  [sg.Text("Number of matches combined"), sg.Spin([i for i in range(1, 4)], initial_value=1, key="NB_MATCHES_FREEBET", visible=sb.BETA)],
+                  [sg.Text(numberofmatches), sg.Spin([i for i in range(1, 4)], initial_value=1, key="NB_MATCHES_FREEBET", visible=sb.BETA)],
                   ]
 column_indicators_freebet = [[sg.Text("", size=(18, 1), key="INDICATORS_FREEBET" + str(_),
                                       visible=False)] for _ in range(5)]
@@ -217,8 +224,8 @@ freebet_layout = [
                             visible=sb.BETA)]])
     ],
     [sg.Button("Calculate", key="BEST_MATCH_FREEBET")],
-    [sg.Button("Ignore this game", key="DELETE_MATCH_FREEBET", visible=False)],
-    [sg.Button("Reset Matches", key="RELOAD_ODDS_FREEBET", visible=False)],
+    [sg.Button(ignoregame, key="DELETE_MATCH_FREEBET", visible=False)],
+    [sg.Button(resetmatches, key="RELOAD_ODDS_FREEBET", visible=False)],
     [sg.Column(column_indicators_freebet),
      sg.Column(column_results_freebet),
      sg.Column([[sg.Text("Breakdown of stakes (the totals displayed take into account any freebets) :",
@@ -240,13 +247,13 @@ options_cashback = [
                                             default_text="0"), sg.Text("%")],
     [sg.Text("Combined odds"), sg.InputText(size=(5, 1), key="COMBI_ODD_CASHBACK",
                                            default_text="1")],
-    [sg.Checkbox("Minimum Date/Time", key="DATE_MIN_CASHBACK_BOOL"),
+    [sg.Checkbox(mindatetime, key="DATE_MIN_CASHBACK_BOOL"),
      sg.InputText(tooltip="DD/MM/YYYY", size=(12, 1), key="DATE_MIN_CASHBACK"),
      sg.InputText(tooltip="HH:MM", size=(7, 1), key="TIME_MIN_CASHBACK")],
-    [sg.Checkbox("Maximum Date/Time", key="DATE_MAX_CASHBACK_BOOL"),
+    [sg.Checkbox(maxdatetime, key="DATE_MAX_CASHBACK_BOOL"),
      sg.InputText(tooltip="DD/MM/YYYY", size=(12, 1), key="DATE_MAX_CASHBACK"),
      sg.InputText(tooltip="HH:MM", size=(7, 1), key="TIME_MAX_CASHBACK")],
-    [sg.Text("Number of matches combined"),
+    [sg.Text(numberofmatches),
      sg.Spin([i for i in range(1, 4)], initial_value=1, key="NB_MATCHES_CASHBACK")],
 ]
 column_indicators_cashback = [[sg.Text("", size=(18, 1), key="INDICATORS_CASHBACK" + str(_),
@@ -262,8 +269,8 @@ cashback_layout = [
                           headings=["Cotes", "1", "N", "2"], key="ODDS_CASHBACK", visible=False,
                           hide_vertical_scroll=True, size=(None, nb_bookmakers))]]),],
     [sg.Button("Calculate", key="BEST_MATCH_CASHBACK")],
-    [sg.Button("Ignore this game", key="DELETE_MATCH_CASHBACK", visible=False)],
-    [sg.Button("Reset Matches", key="RELOAD_ODDS_CASHBACK", visible=False)],
+    [sg.Button(ignoregame, key="DELETE_MATCH_CASHBACK", visible=False)],
+    [sg.Button(resetmatches, key="RELOAD_ODDS_CASHBACK", visible=False)],
     
     [sg.Column(column_indicators_cashback), sg.Column(column_results_cashback), 
      sg.Column([[sg.Text(
@@ -285,10 +292,10 @@ column_fields_combine = [[sg.InputText(key='BET_COMBINE', size=(6, 1))],
 column_combine = [[sg.Column(column_text_combine), sg.Column(column_fields_combine)],
                   [sg.Listbox(sb.SPORTS, size=(20, 6), key="SPORT_COMBINE")]]
 options_combine = [[sg.Text("Options")],
-                   [sg.Checkbox("Minimum Date/Time", key="DATE_MIN_COMBINE_BOOL"),
+                   [sg.Checkbox(mindatetime, key="DATE_MIN_COMBINE_BOOL"),
                     sg.InputText(tooltip="DD/MM/YYYY", size=(12, 1), key="DATE_MIN_COMBINE"),
                     sg.InputText(tooltip="HH:MM", size=(7, 1), key="TIME_MIN_COMBINE")],
-                   [sg.Checkbox("Maximum Date/Time", key="DATE_MAX_COMBINE_BOOL"),
+                   [sg.Checkbox(maxdatetime, key="DATE_MAX_COMBINE_BOOL"),
                     sg.InputText(tooltip="DD/MM/YYYY", size=(12, 1), key="DATE_MAX_COMBINE"),
                     sg.InputText(tooltip="HH:MM", size=(7, 1), key="TIME_MAX_COMBINE")],
                    [sg.Checkbox("Bet to be distributed over several exits from the same handset",
@@ -339,7 +346,7 @@ stakes_layout = [
      sg.Col([[sg.Input(key="STAKE_STAKES_0", size=(6, 1))]]),
      sg.Col([[sg.Input(key="ODD_STAKES_0", size=(6, 1))]]),
      sg.Button("Add bet", key="ADD_STAKES"),
-     sg.Checkbox("Maximum Date/Time", key="DATE_MAX_STAKES_BOOL"),
+     sg.Checkbox(maxdatetime, key="DATE_MAX_STAKES_BOOL"),
      sg.InputText(tooltip="DD/MM/YYYY", size=(12, 1), key="DATE_MAX_STAKES"),
      sg.InputText(tooltip="HH:MM", size=(7, 1), key="TIME_MAX_STAKES")],
     *([sg.Col([[sg.Combo(sb.BOOKMAKERS, key="SITE_STAKES_" + str(i), visible=False)]]),
@@ -410,13 +417,13 @@ column_fields_gagnant = [[sg.InputText(key='BET_GAGNANT', size=(6, 1))],
 column_gagnant = [[sg.Column(column_text_gagnant), sg.Column(column_fields_gagnant)],
                   [sg.Listbox(sb.SPORTS, size=(20, 6), key="SPORT_GAGNANT")]]
 options_gagnant = [[sg.Text("Options")],
-                   [sg.Checkbox("Minimum Date/Time", key="DATE_MIN_GAGNANT_BOOL"),
+                   [sg.Checkbox(mindatetime, key="DATE_MIN_GAGNANT_BOOL"),
                     sg.InputText(tooltip="DD/MM/YYYY", size=(12, 1), key="DATE_MIN_GAGNANT"),
                     sg.InputText(tooltip="HH:MM", size=(7, 1), key="TIME_MIN_GAGNANT")],
-                   [sg.Checkbox("Maximum Date/Time", key="DATE_MAX_GAGNANT_BOOL"),
+                   [sg.Checkbox(maxdatetime, key="DATE_MAX_GAGNANT_BOOL"),
                     sg.InputText(tooltip="DD/MM/YYYY", size=(12, 1), key="DATE_MAX_GAGNANT"),
                     sg.InputText(tooltip="HH:MM", size=(7, 1), key="TIME_MAX_GAGNANT")],
-                   [sg.Text("Number of matches combined"), sg.Spin([i for i in range(1, 4)], initial_value=1, key="NB_MATCHES_GAGNANT")],
+                   [sg.Text(numberofmatches), sg.Spin([i for i in range(1, 4)], initial_value=1, key="NB_MATCHES_GAGNANT")],
                    [sg.Checkbox("Risky handset", key="RISKY_GAGNANT")],
                    [sg.Checkbox("Challenge reimbursed or winner", key="DEFI_REMBOURSE_OU_GAGNANT", visible=sb.BETA)]]
 column_indicators_gagnant = [[sg.Text("", size=(18, 1), key="INDICATORS_GAGNANT" + str(_),
@@ -433,8 +440,8 @@ gagnant_layout = [
                           key="ODDS_GAGNANT", visible=False, hide_vertical_scroll=True, size=(None, nb_bookmakers))],
                 [sg.Button("Voir les cotes combinées", key="ODDS_COMBINE_GAGNANT", visible=False)]])],
     [sg.Button("Calculate", key="BEST_MATCH_GAGNANT")],
-    [sg.Button("Ignore this game", key="DELETE_MATCH_GAGNANT", visible=False)],
-    [sg.Button("Reset Matches", key="RELOAD_ODDS_GAGNANT", visible=False)],
+    [sg.Button(ignoregame, key="DELETE_MATCH_GAGNANT", visible=False)],
+    [sg.Button(resetmatches, key="RELOAD_ODDS_GAGNANT", visible=False)],
     [sg.Column(column_indicators_gagnant),
      sg.Column(column_results_gagnant),
      sg.Column([[sg.Text(
@@ -568,7 +575,7 @@ options_miles = [[sg.Text("Aimed ticket cash")],
                           [sg.Listbox(list(sb.MILES_RATES), size=(20, 6), key="TICKET_MILES")],
                  [sg.Text("Multiplier status VIP"), sg.Input(1, size=(6,1), key="MULTIPLICATOR_MILES")],
                           [sg.Text("Options")],
-                           [sg.Checkbox("Maximum Date/Time", key="DATE_MAX_MILES_BOOL"),
+                           [sg.Checkbox(maxdatetime, key="DATE_MAX_MILES_BOOL"),
                             sg.InputText(tooltip="DD/MM/YYYY", size=(12, 1),
                                          key="DATE_MAX_MILES"),
                             sg.InputText(tooltip="HH:MM", size=(7, 1),
@@ -589,8 +596,8 @@ miles_layout = [[sg.Column(column_miles),
                                                         visible=False, hide_vertical_scroll=True,
                                                         size=(None, nb_bookmakers))]]),],
                                 [sg.Button("Calculate", key="BEST_MATCH_MILES")],
-                                [sg.Button("Ignore this game", key="DELETE_MATCH_MILES", visible=False)],
-                                [sg.Button("Reset Matches", key="RELOAD_ODDS_MILES", visible=False)],
+                                [sg.Button(ignoregame, key="DELETE_MATCH_MILES", visible=False)],
+                                [sg.Button(resetmatches, key="RELOAD_ODDS_MILES", visible=False)],
                                 [sg.Column(column_indicators_miles),
                                  sg.Column(column_results_miles),
                                  sg.Column([[sg.Text(
