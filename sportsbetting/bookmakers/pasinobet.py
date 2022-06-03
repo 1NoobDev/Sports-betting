@@ -22,7 +22,7 @@ async def get_json_pasinobet_api(id_league, barrierebet, vbet):
         site_id = "1869622"
     elif vbet:
         site_id = "277"
-    async with websockets.connect('wss://swarm-2.vbet.fr/', ssl=ssl.SSLContext(protocol=ssl.PROTOCOL_TLS)) as websocket:
+    async with websockets.connect('wss://swarm-2.vbet.fr/', ssl=ssl.SSLContext(protocol=ssl.PROTOCOL_TLSv1_2)) as websocket:
         data = {"command":"request_session",
                 "params":{"language":"fra", "site_id":site_id}}
         await websocket.send(json.dumps(data))
@@ -48,7 +48,7 @@ async def get_json_sport_pasinobet_api(sport, barrierebet, vbet):
         site_id = "1869622"
     elif vbet:
         site_id = "277"
-    async with websockets.connect('wss://swarm-2.vbet.fr/', ssl=ssl.SSLContext(protocol=ssl.PROTOCOL_TLS)) as websocket:
+    async with websockets.connect('wss://swarm-2.vbet.fr/', ssl=ssl.SSLContext(protocol=ssl.PROTOCOL_TLSv1_2)) as websocket:
         data = {"command":"request_session",
                 "params":{"language":"fra", "site_id":site_id}}
         await websocket.send(json.dumps(data))
